@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dashboard</title>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <style>
+            body {
+                font-family: 'Roboto', sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f0f0f0;
+                display: flex;
+            }
+
+            .sidebar {
+                width: 250px;
+                background-color: #007bff;
+                color: #ffffff;
+                height: 100vh;
+                padding: 20px;
+                position: fixed;
+                top: 0;
+                left: 0;
+                box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+
+            .sidebar h1 {
+                font-size: 1.5em;
+                margin: 0;
+                padding-bottom: 20px;
+                border-bottom: 2px solid #ffffff;
+            }
+
+            .sidebar ul {
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+                flex: 1;
+            }
+
+            .sidebar ul li {
+                margin-bottom: 15px;
+            }
+
+            .sidebar ul li a {
+                color: #ffffff;
+                text-decoration: none;
+                font-size: 1.1em;
+                display: block;
+                padding: 10px;
+                border-radius: 5px;
+                transition: background-color 0.3s ease;
+            }
+
+            .sidebar ul li a:hover {
+                background-color: #0056b3;
+            }
+
+            .sidebar .logout {
+                text-align: center;
+                margin-top: 20px;
+            }
+
+            .sidebar .logout a {
+                color: #ffffff;
+                font-size: 1.5em;
+                text-decoration: none;
+            }
+
+            .sidebar .logout a:hover {
+                color: #ffcccb;
+            }
+
+            .main-content {
+                margin-left: 250px;
+                padding: 20px;
+                flex: 1;
+                box-sizing: border-box;
+            }
+
+            .main-content h1 {
+                color: #333;
+                margin-bottom: 20px;
+            }
+
+            .main-content p {
+                font-size: 1.1em;
+                line-height: 1.6;
+            }
+
+            .authors-list {
+                display: none;
+                margin-top: 20px;
+            }
+
+            .authors-list ul {
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .authors-list ul li {
+                background-color: #ffffff;
+                padding: 12px;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+                margin-bottom: 10px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            }
+
+            .authors-list ul li:nth-child(odd) {
+                background-color: #f9f9f9;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div class="sidebar">
+            <h1>Dashboard</h1>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'upload_books' %}">Upload Books</a></li>
+                <li><a href="{% url 'uploaded_files' %}">Uploaded Files</a></li>
+                <li><a href="#" id="authors-link">Authors and Sellers</a></li>
+            </ul>
+            <div class="logout">
+                <a href="{% url 'login' %}" title="Logout"><i class="fas fa-sign-out-alt"></i></a>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <h1>Welcome, {{ user.username }}</h1>
+            <p>Use the sidebar to navigate through different sections of your dashboard.</p>
+
+            <div class="authors-list" id="authors-list">
+                <h2>Authors and Sellers</h2>
+                <ul>
+                    {% for user in users %}
+                    <li>{{ user.username }} ({{ user.address }})</li>
+                    {% empty %}
+                    <li>No public users found.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const authorsLink = document.getElementById('authors-link');
+                const authorsList = document.getElementById('authors-list');
+
+                authorsLink.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    if (authorsList.style.display === 'none' || authorsList.style.display === '') {
+                        authorsList.style.display = 'block';
+                    } else {
+                        authorsList.style.display = 'none';
+                    }
+                });
+            });
+        </script>
+    </body>
+
+</html>
